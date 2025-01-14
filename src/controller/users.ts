@@ -5,7 +5,7 @@ import User from "../models/users";
 import { validateEmail, validatePassword } from "../utils/validator";
 import { hash } from "../utils/encryptor";
 import { jwtSign } from "../utils/jwtService";
-import { emailTemplate, sendEmail } from "../utils/emailService";
+// import { emailTemplate, sendEmail } from "../utils/emailService";
 import generateToken from "../utils/tokenGenerator";
 
 const getUsers = (req: Request, res: Response): void => {
@@ -49,16 +49,16 @@ const signUp: RequestHandler = async (req: Request, res: Response) => {
 
   // send confirm email
   const confirmEmailToken = generateToken();
-  const confirmEmailLink = `${process.env.FRONTEND_HOST_ADDRESS}/activation?token=${confirmEmailToken}`;
-  const emailContent = emailTemplate.confirmEmail(firstName, confirmEmailLink);
-  const sendEmailResult = await sendEmail(
-    email,
-    "Verify your email",
-    emailContent
-  );
-  if (!sendEmailResult) {
-    return res.status(500).json({ error: "Email server error" });
-  }
+  // const confirmEmailLink = `${process.env.FRONTEND_HOST_ADDRESS}/activation?token=${confirmEmailToken}`;
+  // const emailContent = emailTemplate.confirmEmail(firstName, confirmEmailLink);
+  // const sendEmailResult = await sendEmail(
+  //   email,
+  //   "Verify your email",
+  //   emailContent
+  // );
+  // if (!sendEmailResult) {
+  //   return res.status(500).json({ error: "Email server error" });
+  // }
 
   const userID = uuidv4();
   const hashedPassword = await hash(password);
@@ -112,19 +112,19 @@ const sendPasswordResetLink: RequestHandler = async (
     return res.status(500).json({ error: "Server error" });
   }
 
-  const resetPasswordLink = `${process.env.FRONTEND_HOST_ADDRESS}/reset-password?token=${resetPasswordToken}`;
-  const emailContent = emailTemplate.resetPasswordEmail(
-    existingUser.firstName,
-    resetPasswordLink
-  );
-  const sendEmailResult = await sendEmail(
-    email,
-    "Password change request",
-    emailContent
-  );
-  if (!sendEmailResult) {
-    return res.status(500).json({ error: "Email server error" });
-  }
+  // const resetPasswordLink = `${process.env.FRONTEND_HOST_ADDRESS}/reset-password?token=${resetPasswordToken}`;
+  // const emailContent = emailTemplate.resetPasswordEmail(
+  //   existingUser.firstName,
+  //   resetPasswordLink
+  // );
+  // const sendEmailResult = await sendEmail(
+  //   email,
+  //   "Password change request",
+  //   emailContent
+  // );
+  // if (!sendEmailResult) {
+  //   return res.status(500).json({ error: "Email server error" });
+  // }
 
   return res.status(200).json({
     message: `A reset password email has been sent to ${email}, please check your email.`,
